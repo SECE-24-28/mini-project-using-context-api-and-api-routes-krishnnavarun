@@ -1,31 +1,24 @@
 import { NextRequest, NextResponse } from "next/server";
-import { Student } from "@/types/students";
-
-let students: Student[] = [
+import { Feedback } from "@/types/feedbacks";
+let feedbacks: Feedback[] = [
   {
     id: 1,
-    name: "Manoj",
-    age: 20,
-    department: "Computer Science",
+    message: "very good",
   },
   {
     id: 2,
-    name: "Rahul",
-    age: 21,
-    department: "Information Technology",
+    message: "worst",
   },
   {
     id: 3,
-    name: "Priya",
-    age: 22,
-    department: "Electronics",
+    message: "Excellent",
   },
 ];
 
 export async function GET() {
   return NextResponse.json({
     success: true,
-    data: students,
+    data: feedbacks,
   });
 }
 
@@ -33,20 +26,18 @@ export async function GET() {
 export async function POST(request: NextRequest) {
   const body = await request.json();
 
-  const newStudent: Student = {
-    id: students.length + 1,
-    name: body.name,
-    age: body.age,
-    department: body.department,
+  const newFeedback: Feedback = {
+    id: feedbacks.length + 1,
+    message: body.department,
   };
 
-  students.push(newStudent);
+  feedbacks.push(newFeedback);
 
   return NextResponse.json(
     {
       success: true,
-      message: "Student added successfully",
-      data: newStudent,
+      message: "Feedback added successfully",
+      data: newFeedback,
     },
     { status: 201 }
   );
@@ -59,29 +50,29 @@ export async function PUT(request: NextRequest) {
 
   const body = await request.json();
 
-  const studentIndex = students.findIndex(
-    (student) => student.id === id
+  const feedbackIndex = feedbacks.findIndex(
+    (feedback) => feedback.id === id
   );
 
-  if (studentIndex === -1) {
+  if (feedbackIndex === -1) {
     return NextResponse.json(
       {
         success: false,
-        message: "Student not found",
+        message: "Feedback not found",
       },
       { status: 404 }
     );
   }
 
-  students[studentIndex] = {
-    ...students[studentIndex],
+  feedbacks[feedbackIndex] = {
+    ...feedbacks[feedbackIndex],
     ...body,
   };
 
   return NextResponse.json({
     success: true,
-    message: "Student updated successfully",
-    data: students[studentIndex],
+    message: "Feedback updated successfully",
+    data: feedbacks[feedbackIndex],
   });
 }
 
@@ -92,44 +83,44 @@ export async function PATCH(request: NextRequest) {
 
   const body = await request.json();
 
-  const studentIndex = students.findIndex(
-    (student) => student.id === id
+  const feedbackIndex = feedbacks.findIndex(
+    (feedback) => feedback.id === id
   );
 
-  if (studentIndex === -1) {
+  if (feedbackIndex === -1) {
     return NextResponse.json(
       {
         success: false,
-        message: "Student not found",
+        message: "Feedback not found",
       },
       { status: 404 }
     );
   }
 
-  students[studentIndex] = {
-    ...students[studentIndex],
+  feedbacks[feedbackIndex] = {
+    ...feedbacks[feedbackIndex],
     ...body,
   };
 
   return NextResponse.json({
     success: true,
-    message: "Student updated successfully",
-    data: students[studentIndex],
+    message: "Feedback updated successfully",
+    data: feedbacks[feedbackIndex],
   });
 }
 
 export async function DELETE(request : NextRequest){
   const body = await request.json();
 
-  const filteredStudent = students.filter((student) => {
-    return student.id !== body.id;
+  const filteredFeedbacks = feedbacks.filter((feedback) => {
+    return feedback.id !== body.id;
   })
 
-  students = [...filteredStudent];
+  feedbacks = [...filteredFeedbacks];
 
   return NextResponse.json({
     success : true,
     status : 204,
-    message : "Student deleted successfully"
+    message : "Feedback deleted successfully"
   })
 }
